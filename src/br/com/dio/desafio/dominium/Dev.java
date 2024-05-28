@@ -1,8 +1,7 @@
 package br.com.dio.desafio.dominium;
 
-import java.util.LinkedHashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+
 
 public class Dev {
     private String nome;
@@ -19,10 +18,19 @@ public class Dev {
         if(conteudo.isPresent()){
             this.conteudosConcluidos.add(conteudo.get());
             this.conteudosInscritos.remove(conteudo.get());
+        }else{
+            System.out.println("VOCÊ NÃO ESTÁ MATRICULADO EM NENHUM CONTEUDO");
         }
     }
 
-    public void calcularTotalXp() {
+    public double calcularTotalXp() {
+        Iterator<Conteudo> iterator = (Iterator<Conteudo>) this.conteudosConcluidos;
+        double soma = 0d;
+        while(iterator.hasNext()){
+            double next = iterator.next().calcularXp();
+            soma += next;
+        }
+        return soma;
 
     }
 
@@ -48,5 +56,17 @@ public class Dev {
 
     public void setConteudosConcluidos(Set<Conteudo> conteudosConcluidos) {
         this.conteudosConcluidos = conteudosConcluidos;
+    }
+
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Dev)) return false;
+        if (!super.equals(object)) return false;
+        Dev dev = (Dev) object;
+        return java.util.Objects.equals(getNome(), dev.getNome()) && java.util.Objects.equals(getConteudosInscritos(), dev.getConteudosInscritos()) && java.util.Objects.equals(getConteudosConcluidos(), dev.getConteudosConcluidos());
+    }
+
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getNome(), getConteudosInscritos(), getConteudosConcluidos());
     }
 }
